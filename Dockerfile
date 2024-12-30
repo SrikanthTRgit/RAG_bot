@@ -1,18 +1,20 @@
-FROM python:3.12.6
- 
-ENV PYTHONUNBUFFERED=1
- 
+# Use the official Python image as the base image
+FROM python:3.9-slim
+
+# Set the working directory inside the container
 WORKDIR /app
-RUN mkdir /app/C_Networking
- 
-COPY requirements.txt requirements.txt
- 
-RUN pip install -r requirements.txt
- 
+
+# Copy the requirements file
+COPY requirements.txt .
+
+# Install the dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
 COPY . .
- 
+
+# Expose the port the app runs on
 EXPOSE 8501
- 
-CMD [ "export AZURE_OPENAI_API_VERSION=2023-03-15-preview"]
- 
-CMD [ "streamlit","run","main.py","0.0.0.0:8501"]
+
+# Command to run the Streamlit application
+CMD ["streamlit", "run", "app.py"]
